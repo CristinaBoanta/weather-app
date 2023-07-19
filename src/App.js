@@ -1,58 +1,56 @@
 import "./index.css";
-import { useState, useEffect } from "react";
+import 'react-toastify/dist/ReactToastify.css';
+
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+
+import Card from "./components/Card";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
 
-  useEffect(() => {
-    // fetch('http://api.weatherapi.com/v1/current.json?key=05f05a14a0ca402984b03203233001&q=Oradea')
-    // .then((response) => {
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not ok');
-    //   }
-    //   return response.json();
-    // })
-    // .then((data) => console.log(data))
-
+  const fetchWeatherData = () => {
     fetch(
       "http://api.weatherapi.com/v1/forecast.json?key=05f05a14a0ca402984b03203233001&days=3&q=Oradea"
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          toast.error("Error");
+          throw new Error("Response was not ok");
         }
         return response.json();
       })
       .then((data) => {
         console.log(data);
         setWeatherData(data);
-      });
-  }, []);
-  
+      })
+  };
 
-  const getDayOfTheWeek = (dateString) => {
-    const dateObj = new Date(dateString);
-    const dayOfWeekText = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
-    return dayOfWeekText;
-  }
+  useEffect(() => {
+    fetchWeatherData();
+    console.log("called from useeffect")
+  }, []);
 
   return (
     <div className="App h-full">
-      <div className="bg-gray-100 h-full">
-        <div className="container mx-auto py-8">
-          <h1 className="text-3xl font-bold text-center mb-6">
-            Weather App Dashboard
-          </h1>
 
+    <ToastContainer />
+
+      <div className="bg-gray-300 h-full">
+        <div className="container mx-auto py-8">
+          <h1 className="text-3xl text-center mb-6">
+            Forecast for{" "}
+            <span className="font-bold">
+              {weatherData && weatherData.location.name}
+            </span>
+          </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {weatherData &&
-              weatherData.forecast.forecastday.map((forecastItem) => {
-                return (
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                      <h2 className="text-xl font-bold mb-2">{getDayOfTheWeek(forecastItem.date)}</h2>
-                    </div>
-                );
-              })}
+              weatherData.forecast.forecastday.map((forecastItem) => (
+                <div key={forecastItem.date}>
+                  <Card forecastItem={forecastItem} />
+                </div>
+              ))}
           </div>
         </div>
       </div>

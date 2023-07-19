@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  height: 100%;
+}
 
-html, body, #root {
-    height: 100%;
+/* Conditional card height */
+
+.content.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.content.expanded {
+  max-height: 200px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }
