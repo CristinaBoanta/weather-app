@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaRegBookmark } from "react-icons/fa";
+import { addToLocalStorage, removeFromLocalStorage } from "../bookmarkHelpers";
 import "../index.css";
 
 const Card = (props) => {
@@ -19,11 +20,17 @@ const Card = (props) => {
     return dayOfWeekText;
   };
 
+  const saveBookmark = () => {
+    addToLocalStorage("bookmarks", forecastItem)
+  }
+
   const isGoodForMititei = forecastItem.day.daily_chance_of_rain <= 20 && forecastItem.day.avgtemp_c >= 25;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <div className="flex flex-col items-center">
+        <button onClick={saveBookmark}><FaRegBookmark /></button>
+
         <h2 className="text-xl font-bold mb-2">
           {getDayOfTheWeek(forecastItem.date)}
         </h2>

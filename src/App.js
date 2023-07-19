@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import env from "react-dotenv";
 
 import Card from "./components/Card";
 
@@ -11,7 +12,7 @@ const App = () => {
 
   const fetchWeatherData = () => {
     fetch(
-      "http://api.weatherapi.com/v1/forecast.json?key=05f05a14a0ca402984b03203233001&days=3&q=Oradea"
+      `http://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=Oradea`
     )
       .then((response) => {
         if (!response.ok) {
