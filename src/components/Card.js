@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FaAngleDown, FaAngleUp, FaRegBookmark } from "react-icons/fa";
-import { addToLocalStorage, removeFromLocalStorage } from "../bookmarkHelpers";
+import { addToLocalStorage } from "../bookmarkHelpers";
+import { v4 as uuidv4 } from "uuid";
 import "../index.css";
 
 const Card = (props) => {
-  const { forecastItem } = props;
+  const { forecastItem, isBookmarked, cardDeleteHandler } = props;
 
   const [isDivCollapsed, setIsDivCollapsed] = useState(true);
 
@@ -21,15 +22,20 @@ const Card = (props) => {
   };
 
   const saveBookmark = () => {
-    addToLocalStorage("bookmarks", forecastItem)
-  }
+    addToLocalStorage("bookmarks", { ...forecastItem, id: uuidv4() });
+  };
 
-  const isGoodForMititei = forecastItem.day.daily_chance_of_rain <= 20 && forecastItem.day.avgtemp_c >= 25;
+  const isGoodForMititei =
+    forecastItem.day.daily_chance_of_rain <= 20 &&
+    forecastItem.day.avgtemp_c >= 25;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <div className="flex flex-col items-center">
-        <button onClick={saveBookmark}><FaRegBookmark /></button>
+        <button onClick={saveBookmark}>
+          <FaRegBookmark />
+        </button>
+        {isBookmarked && <button onClick={() => cardDeleteHandler(forecastItem)}>Delete</button>}
 
         <h2 className="text-xl font-bold mb-2">
           {getDayOfTheWeek(forecastItem.date)}
@@ -51,7 +57,13 @@ const Card = (props) => {
         <p>Min temp: {Math.round(forecastItem.day.mintemp_c)}° C</p>
         <p>Avg temp: {Math.round(forecastItem.day.avgtemp_c)}° C</p>
         <p>Avg humidity: {forecastItem.day.avghumidity} %</p>
-        <p>{isGoodForMititei ? <div>Good for mititei</div> : <div>No mititei today, boss</div>}</p>
+        <p>
+          {isGoodForMititei ? (
+            <div>Good for mititei</div>
+          ) : (
+            <div>No mititei today, boss</div>
+          )}
+        </p>
       </div>
     </div>
   );
