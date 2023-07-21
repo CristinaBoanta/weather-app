@@ -1,7 +1,7 @@
 import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import env from "react-dotenv";
 
@@ -9,10 +9,11 @@ import Card from "./components/Card";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
+  const [searchInputValue, setSearchInputValue] = useState("");
 
   const fetchWeatherData = () => {
     fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=Oradea`
+      `http://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=${searchInputValue}`
     )
       .then((response) => {
         if (!response.ok) {
@@ -27,10 +28,6 @@ const App = () => {
       })
   };
 
-  useEffect(() => {
-    fetchWeatherData();
-    console.log("called from useeffect")
-  }, []);
 
   return (
     <div className="App h-full">
@@ -45,6 +42,10 @@ const App = () => {
               {weatherData && weatherData.location.name}
             </span>
           </h1>
+
+          <input value={searchInputValue} onChange={(event) => setSearchInputValue(event.target.value)} />
+          <button onClick={fetchWeatherData}>Search</button>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {weatherData &&
               weatherData.forecast.forecastday.map((forecastItem) => (
