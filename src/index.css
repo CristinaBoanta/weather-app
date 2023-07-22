@@ -8,6 +8,11 @@ body,
   height: 100%;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Conditional card height */
 
 .content.collapsed {
@@ -17,7 +22,7 @@ body,
 }
 
 .content.expanded {
-  max-height: 200px;
+  max-height: 350px;
   overflow: hidden;
   transition: max-height 0.3s ease;
 }

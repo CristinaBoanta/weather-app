@@ -10,16 +10,16 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/bookmarks">Bookmarks</Link>
-            </li>
-          </ul>
-        </nav>
+    <nav className="bg-gradient-to-br from-main-color-light to-main-color p-4">
+      <ul className="flex space-x-6 font-bold text-white">
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/bookmarks">Bookmarks</Link>
+        </li>
+      </ul>
+    </nav>
 
         <Routes>
           <Route path="/" element={<App />} />
