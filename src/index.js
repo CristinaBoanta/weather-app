@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import App from "./App";
+import Error from './pages/Error';
 import Bookmarks from "./pages/Bookmarks";
 import reportWebVitals from "./reportWebVitals";
 
@@ -24,6 +25,7 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path='*' element={<Error />} />
         </Routes>
     </Router>
   </React.StrictMode>

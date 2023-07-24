@@ -9,7 +9,7 @@ import anger from "../assets/angry.png";
 import Button from "./Button";
 
 const Card = (props) => {
-  const { forecastItem, isBookmarked, cardDeleteHandler } = props;
+  const { forecastItem, isBookmarked, cardDeleteHandler, location } = props;
 
   const [isDivCollapsed, setIsDivCollapsed] = useState(true);
 
@@ -29,9 +29,13 @@ const Card = (props) => {
 
   const saveBookmark = () => {
     if (!isBookmarkClicked) {
-      addToLocalStorage("bookmarks", { ...forecastItem, id: uuidv4() });
+      addToLocalStorage("bookmarks", {
+        ...forecastItem,
+        id: uuidv4(),
+        location: location,
+      });
       setIsBookmarkClicked(true);
-      toast.success("bookmark saved");
+      toast.success("Bookmark saved");
     }
   };
 
@@ -45,12 +49,7 @@ const Card = (props) => {
 
       <div className="flex flex-col items-center">
         {isBookmarked && (
-          <button
-            onClick={() => cardDeleteHandler(forecastItem)}
-            className="text-red-500 font-bold hover:text-opacity-80 transition"
-          >
-            Delete
-          </button>
+          <Button onClick={() => cardDeleteHandler(forecastItem)} label="Delete" />
         )}
 
         {isBookmarked ? null : (
@@ -61,8 +60,15 @@ const Card = (props) => {
           />
         )}
 
+        {forecastItem.location && (
+          <h1 className="text-2xl mt-4">Forecast for {forecastItem.location}</h1>
+        )}
+
         <h2 className="text-3xl font-bold mt-4 mb-2">
           {getDayOfTheWeek(forecastItem.date)}
+        </h2>
+        <h2 className="exact-date">
+          {forecastItem.date}
         </h2>
 
         <div className="flex items-center">
@@ -76,6 +82,10 @@ const Card = (props) => {
 
         <p className="mt-2">
           {forecastItem.day.daily_chance_of_rain} % chance of rain
+        </p>
+
+        <p>
+          Precipitation (ml): {forecastItem.day.totalprecip_mm}
         </p>
 
         <button

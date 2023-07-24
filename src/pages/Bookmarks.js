@@ -11,16 +11,16 @@ const Bookmarks = () => {
   const cardDeleteHandler = (forecastItem) => {
     removeFromLocalStorage("bookmarks", forecastItem.id);
     setBookmarkedDays(JSON.parse(localStorage.getItem("bookmarks")) || []);
-    toast.success("bookmark deleted");
+    toast.success("Bookmark deleted");
   };
 
   return (
-    <div className="bg-main-color-dark h-full p-8">
+    <div className="bg-main-color-dark p-8">
       <ToastContainer />
 
       <h1 className="text-3xl text-center text-white mb-6">Bookmarks</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {bookmarkedDays &&
           bookmarkedDays.map((forecastItem) => (
             <div key={forecastItem.id}>

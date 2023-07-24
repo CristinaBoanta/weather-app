@@ -8,12 +8,16 @@ import env from "react-dotenv";
 
 import Card from "./components/Card";
 import Button from "./components/Button";
+import Spinner from './components/Spinner';
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [searchInputValue, setSearchInputValue] = useState("");
+  const [loading, setIsLoading] = useState(false);
 
   const fetchWeatherData = () => {
+    setIsLoading(true);
+
     fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=${searchInputValue}`
     )
@@ -26,6 +30,8 @@ const App = () => {
       })
       .then((data) => {
         setWeatherData(data);
+        setIsLoading(false);
+        // console.log(data);
       });
   };
 
@@ -42,6 +48,10 @@ const App = () => {
   return (
     <div className="App bg-main-color-dark h-full px-6">
       <ToastContainer />
+
+      {loading ? (
+        <Spinner />
+      ) : null}
 
       <div className="container mx-auto py-8">
         <div className="mb-8">
@@ -76,7 +86,10 @@ const App = () => {
           {weatherData &&
             weatherData.forecast.forecastday.map((forecastItem) => (
               <div key={forecastItem.date}>
-                <Card forecastItem={forecastItem} />
+                <Card
+                  forecastItem={forecastItem}
+                  location={weatherData.location.name}
+                />
               </div>
             ))}
         </div>
