@@ -4,9 +4,19 @@ A weather forecast application that filters through a list of cities from all ov
 
 **Setup**
 
-**1** Go to https://www.weatherapi.com/, create an account and generate an API key
+**1**  Go to https://www.weatherapi.com/, create an account and generate an API key
+
+
 **2**  Create a `.env` file inside the root of the project.
+
+
 **3**  Create a `API_KEY` environment variable and store your API key inside of it
+
+
 **4**  Run `npm install`
+
+
 **5**  Run `npm start`
+
+
 **6** The app should now be running on [localhost:3000](http://localhost:3000 "localhost:3000")
