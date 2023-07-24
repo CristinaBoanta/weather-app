@@ -13,8 +13,6 @@ body,
   flex-direction: column;
 }
 
-/* Conditional card height */
-
 .content.collapsed {
   max-height: 0;
   overflow: hidden;

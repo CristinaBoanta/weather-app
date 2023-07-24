@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { FaAngleDown, FaAngleUp, FaRegBookmark } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
 import { addToLocalStorage } from "../bookmarkHelpers";
 import { v4 as uuidv4 } from "uuid";
 import "../index.css";
 import mici from "../assets/mici_prep.png";
 import anger from "../assets/angry.png";
-
+import Button from "./Button";
 
 const Card = (props) => {
   const { forecastItem, isBookmarked, cardDeleteHandler } = props;
 
   const [isDivCollapsed, setIsDivCollapsed] = useState(true);
+
+  const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
 
   const toggleDivCollapse = () => {
     setIsDivCollapsed((prevState) => !prevState);
@@ -25,7 +28,11 @@ const Card = (props) => {
   };
 
   const saveBookmark = () => {
-    addToLocalStorage("bookmarks", { ...forecastItem, id: uuidv4() });
+    if (!isBookmarkClicked) {
+      addToLocalStorage("bookmarks", { ...forecastItem, id: uuidv4() });
+      setIsBookmarkClicked(true);
+      toast.success("bookmark saved");
+    }
   };
 
   const isGoodForMititei =
@@ -34,13 +41,9 @@ const Card = (props) => {
 
   return (
     <div className="bg-gradient-to-br from-main-color-light to-main-color p-8 rounded-lg shadow-md text-white relative">
+      <ToastContainer />
+
       <div className="flex flex-col items-center">
-        <button
-          onClick={saveBookmark}
-          className="hover:text-opacity-80 transition absolute right-[30px]"
-        >
-          <FaRegBookmark size="20" />
-        </button>
         {isBookmarked && (
           <button
             onClick={() => cardDeleteHandler(forecastItem)}
@@ -50,15 +53,25 @@ const Card = (props) => {
           </button>
         )}
 
+        {isBookmarked ? null : (
+          <Button
+            onClick={saveBookmark}
+            disabled={isBookmarkClicked}
+            label="Add to bookmarks"
+          />
+        )}
+
         <h2 className="text-3xl font-bold mt-4 mb-2">
           {getDayOfTheWeek(forecastItem.date)}
         </h2>
 
         <div className="flex items-center">
-          <img src={forecastItem.day.condition.icon} alt="icon" className="w-16 h-16" />
-          <p className="text-lg ml-2 mt-2">
-            {forecastItem.day.condition.text}
-          </p>
+          <img
+            src={forecastItem.day.condition.icon}
+            alt="icon"
+            className="w-16 h-16"
+          />
+          <p className="text-lg ml-2 mt-2">{forecastItem.day.condition.text}</p>
         </div>
 
         <p className="mt-2">
@@ -73,7 +86,11 @@ const Card = (props) => {
         </button>
       </div>
 
-      <div className={`content ${isDivCollapsed ? "collapsed" : "expanded"} mt-4 flex flex-col items-center`}>
+      <div
+        className={`content ${
+          isDivCollapsed ? "collapsed" : "expanded"
+        } mt-4 flex flex-col items-center`}
+      >
         <p className="">
           Max temp: {Math.round(forecastItem.day.maxtemp_c)}° C
         </p>
@@ -83,14 +100,26 @@ const Card = (props) => {
         <p className="mt-2">
           Avg temp: {Math.round(forecastItem.day.avgtemp_c)}° C
         </p>
-        <p className="mt-2">
-          Avg humidity: {forecastItem.day.avghumidity} %
-        </p>
+        <p className="mt-2">Avg humidity: {forecastItem.day.avghumidity} %</p>
         <p className="mt-2">
           {isGoodForMititei ? (
-            <span className="font-semibold">Good for mititei <img src={mici} className="w-[5rem] h-[5rem] inline-block ml-2" alt="mici" /> </span>
+            <span className="font-semibold">
+              Good for mititei{" "}
+              <img
+                src={mici}
+                className="w-[5rem] h-[5rem] inline-block ml-2"
+                alt="mici"
+              />{" "}
+            </span>
           ) : (
-            <span className="text-red-500 font-semibold">No mititei today, boss <img src={anger} className="w-[5rem] h-[5rem] inline-block ml-2" alt="angry-emoji" /> </span>
+            <span className="text-red-500 font-semibold">
+              No mititei today, boss{" "}
+              <img
+                src={anger}
+                className="w-[5rem] h-[5rem] inline-block ml-2"
+                alt="angry-emoji"
+              />{" "}
+            </span>
           )}
         </p>
       </div>

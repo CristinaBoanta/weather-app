@@ -3,9 +3,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { FaWindowClose } from "react-icons/fa";
 import env from "react-dotenv";
 
 import Card from "./components/Card";
+import Button from "./components/Button";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -23,9 +25,18 @@ const App = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setWeatherData(data);
       });
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      fetchWeatherData();
+    }
+  };
+
+  const deleteInputValue = () => {
+    setSearchInputValue("");
   };
 
   return (
@@ -42,18 +53,22 @@ const App = () => {
           </h1>
 
           <div className="flex justify-center mb-4">
-            <input
-              className="px-4 py-2 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-white"
-              value={searchInputValue}
-              onChange={(event) => setSearchInputValue(event.target.value)}
-              placeholder="Enter location..."
-            />
-            <button
-              className="ml-2 px-4 py-2 rounded-md bg-white text-0f1b28 font-bold hover:bg-opacity-80 transition"
-              onClick={fetchWeatherData}
-            >
-              Search
-            </button>
+            <div className="relative">
+              <input
+                className="px-4 py-2 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-white pr-12"
+                value={searchInputValue}
+                onChange={(event) => setSearchInputValue(event.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Enter location..."
+              />
+              <button
+                onClick={deleteInputValue}
+                className="absolute right-2 top-2"
+              >
+                <FaWindowClose color="#0f0725" size={25} />
+              </button>
+            </div>
+            <Button label="Search" onClick={fetchWeatherData} />
           </div>
         </div>
 
