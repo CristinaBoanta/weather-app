@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaWater } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { addToLocalStorage } from "../bookmarkHelpers";
 import { v4 as uuidv4 } from "uuid";
 import "../index.css";
 import mici from "../assets/mici_prep.png";
 import anger from "../assets/angry.png";
+import rainIcon from "../assets/rain.png";
 import Button from "./Button";
 
 const Card = (props) => {
@@ -49,7 +50,10 @@ const Card = (props) => {
 
       <div className="flex flex-col items-center">
         {isBookmarked && (
-          <Button onClick={() => cardDeleteHandler(forecastItem)} label="Delete" />
+          <Button
+            onClick={() => cardDeleteHandler(forecastItem)}
+            label="Delete"
+          />
         )}
 
         {isBookmarked ? null : (
@@ -61,15 +65,15 @@ const Card = (props) => {
         )}
 
         {forecastItem.location && (
-          <h1 className="text-2xl mt-4">Forecast for {forecastItem.location}</h1>
+          <h1 className="text-2xl mt-4">
+            Forecast for {forecastItem.location}
+          </h1>
         )}
 
         <h2 className="text-3xl font-bold mt-4 mb-2">
           {getDayOfTheWeek(forecastItem.date)}
         </h2>
-        <h2 className="exact-date">
-          {forecastItem.date}
-        </h2>
+        <h2 className="exact-date">{forecastItem.date}</h2>
 
         <div className="flex items-center">
           <img
@@ -81,11 +85,7 @@ const Card = (props) => {
         </div>
 
         <p className="mt-2">
-          {forecastItem.day.daily_chance_of_rain} % chance of rain
-        </p>
-
-        <p>
-          Precipitation (ml): {forecastItem.day.totalprecip_mm}
+          Avg temp: {Math.round(forecastItem.day.avgtemp_c)}° C
         </p>
 
         <button
@@ -101,7 +101,17 @@ const Card = (props) => {
           isDivCollapsed ? "collapsed" : "expanded"
         } mt-4 flex flex-col items-center`}
       >
-        <p className="">
+        <p className="mt-2 flex items-center gap-4">
+          <img src={rainIcon} className="w-16 h-16" alt="rain" />
+          {forecastItem.day.daily_chance_of_rain} % chance of rain
+        </p>
+
+        <p className="mt-2 flex items-center gap-4">
+        <FaWater size={35} /> 
+          <span className="">Precipitation (ml): {forecastItem.day.totalprecip_mm}</span>
+        </p>
+
+        <p className="mt-2">
           Max temp: {Math.round(forecastItem.day.maxtemp_c)}° C
         </p>
         <p className="mt-2">
