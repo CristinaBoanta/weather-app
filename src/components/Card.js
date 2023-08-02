@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { FaAngleDown, FaAngleUp, FaWater } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaWater, FaCloudRain } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { addToLocalStorage } from "../bookmarkHelpers";
 import { v4 as uuidv4 } from "uuid";
 import "../index.css";
 import mici from "../assets/mici_prep.png";
 import anger from "../assets/angry.png";
-import rainIcon from "../assets/rain.png";
 import Button from "./Button";
 
 const Card = (props) => {
@@ -39,6 +38,33 @@ const Card = (props) => {
       toast.success("Bookmark saved");
     }
   };
+
+  const gridItems = [
+    {
+      icon: <FaCloudRain size={35} />,
+      text: `${forecastItem.day.daily_chance_of_rain}% chance of rain`,
+    },
+    {
+      icon: <FaWater size={35} />,
+      text: `Precipitation (ml): ${forecastItem.day.totalprecip_mm}`,
+    },
+    {
+      icon: null,
+      text: `Max temp: ${Math.round(forecastItem.day.maxtemp_c)}° C`,
+    },
+    {
+      icon: null,
+      text: `Min temp: ${Math.round(forecastItem.day.mintemp_c)}° C`,
+    },
+    {
+      icon: null,
+      text: `Avg temp: ${Math.round(forecastItem.day.avgtemp_c)}° C`,
+    },
+    {
+      icon: null,
+      text: `Avg humidity: ${forecastItem.day.avghumidity}%`,
+    },
+  ];
 
   const isGoodForMititei =
     forecastItem.day.daily_chance_of_rain <= 20 &&
@@ -84,8 +110,9 @@ const Card = (props) => {
           <p className="text-lg ml-2 mt-2">{forecastItem.day.condition.text}</p>
         </div>
 
-        <p className="mt-2">
-          Avg temp: {Math.round(forecastItem.day.avgtemp_c)}° C
+        <p className="mt-2 flex items-center gap-4">
+          <span className="text-bold text-lg">Avg temp:</span>{" "}
+          {Math.round(forecastItem.day.avgtemp_c)}° C
         </p>
 
         <button
@@ -101,26 +128,23 @@ const Card = (props) => {
           isDivCollapsed ? "collapsed" : "expanded"
         } mt-4 flex flex-col items-center`}
       >
-        <p className="mt-2 flex items-center gap-4">
-          <img src={rainIcon} className="w-16 h-16" alt="rain" />
-          {forecastItem.day.daily_chance_of_rain} % chance of rain
-        </p>
-
-        <p className="mt-2 flex items-center gap-4">
-        <FaWater size={35} /> 
-          <span className="">Precipitation (ml): {forecastItem.day.totalprecip_mm}</span>
-        </p>
-
-        <p className="mt-2">
-          Max temp: {Math.round(forecastItem.day.maxtemp_c)}° C
-        </p>
-        <p className="mt-2">
-          Min temp: {Math.round(forecastItem.day.mintemp_c)}° C
-        </p>
-        <p className="mt-2">
-          Avg temp: {Math.round(forecastItem.day.avgtemp_c)}° C
-        </p>
-        <p className="mt-2">Avg humidity: {forecastItem.day.avghumidity} %</p>
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {gridItems.map((item, index) => (
+              <div
+                key={index}
+                className={`p-2 text-white text-center bg-gradient-to-br from-[#0f0725] to-[#4e3f66] rounded-xl`}
+              >
+                {item.icon && (
+                  <p className="flex items-center gap-4">
+                    {item.icon} {item.text}
+                  </p>
+                )}
+                {!item.icon && <p className="">{item.text}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
         <p className="mt-2">
           {isGoodForMititei ? (
             <span className="font-semibold">
@@ -129,16 +153,16 @@ const Card = (props) => {
                 src={mici}
                 className="w-[5rem] h-[5rem] inline-block ml-2"
                 alt="mici"
-              />{" "}
+              />
             </span>
           ) : (
             <span className="text-red-500 font-semibold">
-              No mititei today, boss{" "}
+              No mititei today {" "}
               <img
                 src={anger}
-                className="w-[5rem] h-[5rem] inline-block ml-2"
+                className="w-[4rem] h-[4rem] inline-block ml-2"
                 alt="angry-emoji"
-              />{" "}
+              />
             </span>
           )}
         </p>
