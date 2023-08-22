@@ -21,7 +21,7 @@ const App = () => {
     setIsLoading(true);
 
     fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=${city}`
+      `https://api.weatherapi.com/v1/forecast.json?key=${env.API_KEY}&days=3&q=${city}`
     )
       .then((response) => {
         if (!response.ok) {
@@ -98,7 +98,7 @@ const App = () => {
   };
 
   return (
-    <div className="App bg-main-color-dark h-full px-6">
+    <div className="App bg-main-color-dark px-6">
       <ToastContainer />
 
       {loading ? (
@@ -136,7 +136,7 @@ const App = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-4">
           {weatherData &&
             weatherData.forecast.forecastday.map((forecastItem) => (
               <div key={forecastItem.date}>

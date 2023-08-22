@@ -58,11 +58,11 @@ const Card = (props) => {
     },
     {
       icon: null,
-      text: `Avg temp: ${Math.round(forecastItem.day.avgtemp_c)}° C`,
+      text: `Sunrise: ${forecastItem.astro.sunrise}`,
     },
     {
       icon: null,
-      text: `Avg humidity: ${forecastItem.day.avghumidity}%`,
+      text: `Sunset: ${forecastItem.astro.sunset}`,
     },
   ];
 
@@ -110,9 +110,19 @@ const Card = (props) => {
           <p className="text-lg ml-2 mt-2">{forecastItem.day.condition.text}</p>
         </div>
 
-        <p className="mt-2 flex items-center gap-4">
+        <p className="mt-2 flex justify-between w-full gap-4">
           <span className="text-bold text-lg">Avg temp:</span>{" "}
           {Math.round(forecastItem.day.avgtemp_c)}° C
+        </p>
+
+        <p className="mt-2 flex justify-between w-full gap-4">
+          <span className="text-bold text-lg">Wind speed:</span>{" "}
+          <p>{Math.round(forecastItem.day.maxwind_kph)} km/h</p>
+        </p>
+
+        <p className="mt-2 flex justify-between w-full gap-4">
+          <span className="text-bold text-lg">Avg humidity:</span>{" "}
+          <p>{Math.round(forecastItem.day.avghumidity)} km/h</p>
         </p>
 
         <button
@@ -136,7 +146,7 @@ const Card = (props) => {
                 className={`p-2 text-white text-center bg-gradient-to-br from-[#0f0725] to-[#4e3f66] rounded-xl`}
               >
                 {item.icon && (
-                  <p className="flex items-center gap-4">
+                  <p className="flex items-center gap-4 md:justify-center md:text-center">
                     {item.icon} {item.text}
                   </p>
                 )}
